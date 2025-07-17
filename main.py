@@ -2,12 +2,17 @@ import streamlit as st
 import pandas as pd
 import pyodbc
 
-# --- Title ---
-st.title("SA1 Trading Prices Viewer")
+st.subheader("Select Time Range")
 
-# --- Time filter input ---
-start_time = st.datetime_input("Start time", pd.to_datetime("2025-02-01 00:05"))
-end_time =  st.datetime_input("End time", pd.Timestamp.now())
+start_date = st.date_input("Start date", pd.to_datetime("2025-02-01").date())
+start_time_val = st.time_input("Start time", pd.to_datetime("00:05").time())
+
+end_date = st.date_input("End date", pd.Timestamp.now().date())
+end_time_val = st.time_input("End time", pd.Timestamp.now().time())
+
+# Combine date and time into full datetime objects
+start_datetime = pd.to_datetime(f"{start_date} {start_time_val}")
+end_datetime = pd.to_datetime(f"{end_date} {end_time_val}")
 
 # --- Connect to SQL Server ---
 @st.cache_data
@@ -17,19 +22,19 @@ def load_data(start, end):
     connection_string = f'DRIVER=ODBC Driver 17 for SQL Server;SERVER={server};DATABASE={database};Trusted_Connection=yes;'
     connection = pyodbc.connect(connection_string)
 
-    query = f"""
-        SELECT [SETTLEMENTDATE], [REGIONID], [PERIODID], [RRP]
-        FROM [InfoServer].[dbo].[TRADINGPRICE]
-        WHERE [REGIONID] = 'SA1'
-        AND [SETTLEMENTDATE] BETWEEN '{start}' AND '{end}'
+    query  = f"""
+    SELECT [SETTLEMENTDATE], [REGIONID], [PERIODID], [RRP]
+    FROM [InfoServer].[dbo].[TRADINGPRICE]
+    WHERE [REGIONID] = 'SA1'
+    AND [SETTLEMENTDATE] BETWEEN '{start.strftime('%Y-%m-%d %H:%M:%S')}' AND '{end.strftime('%Y-%m-%d %H:%M:%S')}'
     """
     df = pd.read_sql_query(query, connection)
     connection.close()
     return df
 
 # --- Load and display data ---
-if start_time < end_time:
-    df = load_data(start_time, end_time)
+if start_datetime < end_datetime:
+    df = load_data(start_datetime, end_datetime)
     st.dataframe(df)
 else:
     st.warning("Start time must be before end time.")
