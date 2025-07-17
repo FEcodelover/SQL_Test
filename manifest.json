@@ -6,7 +6,7 @@
     "entrypoint": "main"
   },
   "python": {
-    "version": "3.10.7",
+    "version": "3.11.5",
     "package_manager": {
       "name": "pip",
       "version": "21.1.2",
