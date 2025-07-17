@@ -19,7 +19,7 @@ end_datetime = pd.to_datetime(f"{end_date} {end_time_val}")
 def load_data(start, end):
     server = 'SAWpAEMO'
     database = 'InfoServer'
-    user = st.secrets["ev005026"]
+    user = st.secrets["ev005526"]
     password = st.secrets["Goozman$"]
 
     connection_string = (
