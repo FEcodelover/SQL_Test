@@ -20,7 +20,7 @@ def load_data(start, end):
     server = 'SAWpAEMO'
     database = 'InfoServer'
     user = st.secrets["ev005026"]
-    password = st.secrets["MahdiBakeri1$"]
+    password = st.secrets["Goozman$"]
 
     connection_string = (
     f'DRIVER=ODBC Driver 17 for SQL Server;'
