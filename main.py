@@ -19,8 +19,8 @@ end_datetime = pd.to_datetime(f"{end_date} {end_time_val}")
 def load_data(start, end):
     server = 'SAWpAEMO'
     database = 'InfoServer'
-    user = st.secrets["ev005526"]
-    password = st.secrets["Goozman$"]
+    user = st.secrets["db_user"]
+    password = st.secrets["db_password$"]
 
     connection_string = (
     f'DRIVER=ODBC Driver 17 for SQL Server;'
